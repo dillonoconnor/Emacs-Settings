@@ -1,0 +1,98 @@
+* Completion and Search
+  #+begin_src elisp
+    (use-package company
+      :diminish company-mode
+      :init (global-company-mode))
+
+    (use-package selectrum
+      :config (selectrum-mode 1))
+
+    (use-package selectrum-prescient
+      :config (selectrum-prescient-mode 1))
+
+    (use-package projectile
+      :diminish projectile-mode
+      :config (projectile-mode)
+      :bind ("M-p" . projectile-find-file))
+
+    (use-package marginalia
+      :init (marginalia-mode)
+      :bind ("M-a" . marginalia-cycle))
+
+    (use-package ctrlf
+      :config
+      (ctrlf-mode 1))
+
+    (use-package consult
+      :bind ("M-;" . consult-ripgrep))
+
+    (use-package embark
+      :bind ("M-." . embark-act))
+  #+end_src
+
+* Fonts
+  #+begin_src elisp
+    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
+  #+end_src
+
+* General
+  #+begin_src elisp
+    (setq inhibit-startup-screen t)
+    (setq tool-bar-mode 0)
+    (setq visible-bell t)
+    (column-number-mode)
+    (global-display-line-numbers-mode t)
+    (fset 'yes-or-no-p 'y-or-n-p)
+
+    (use-package winum
+      :config
+      (winum-mode)
+      :bind (("M-1" . winum-select-window-1)
+	     ("M-2" . winum-select-window-2)
+	     ("M-3" . winum-select-window-3)
+	     ("M-4" . winum-select-window-4)
+	     ("M-5" . winum-select-window-5)
+	     ("M-6" . winum-select-window-6)))
+  #+end_src
+
+* Git
+  #+begin_src elisp
+    (use-package magit
+      :commands magit-status
+      :bind ("M-g" . magit-status))
+  #+end_src
+  
+* God Mode
+  #+begin_src elisp
+    (use-package god-mode
+      :config (god-mode)
+      :bind ("<escape>" . god-local-mode))
+      (setq god-exempt-major-modes nil)
+      (setq god-exempt-predicates nil)
+  #+end_src
+  
+* Minibuffer
+  #+begin_src elisp
+    (use-package diminish)
+
+    (use-package which-key
+      :diminish which-key-mode
+      :config
+      (which-key-mode)
+      (setq which-key-idle-delay 0.1))
+
+    (use-package mini-frame
+      :config (mini-frame-mode))
+  #+end_src
+  
+* Org Mode
+  #+begin_src elisp
+    (use-package org-bullets
+      :hook (org-mode . org-bullets-mode))
+  #+end_src
+  
+* Themes
+  #+begin_src elisp
+    (use-package doom-themes
+      :config (load-theme 'doom-gruvbox t))
+  #+end_src
