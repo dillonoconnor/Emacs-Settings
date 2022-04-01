@@ -67,8 +67,6 @@
     (use-package god-mode
       :config (god-mode)
       :bind ("<escape>" . god-local-mode))
-      (setq god-exempt-major-modes nil)
-      (setq god-exempt-predicates nil)
   #+end_src
   
 * Minibuffer
