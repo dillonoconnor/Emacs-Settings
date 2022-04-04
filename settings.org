@@ -13,21 +13,22 @@
     (use-package projectile
       :diminish projectile-mode
       :config (projectile-mode)
-      :bind ("M-p" . projectile-find-file))
+      :bind (("M-p" . projectile-find-file)
+	     ("M-;" . projectile-ripgrep)))
 
     (use-package marginalia
       :init (marginalia-mode)
       :bind ("M-a" . marginalia-cycle))
 
     (use-package ctrlf
-      :config
-      (ctrlf-mode 1))
-
-    (use-package consult
-      :bind ("M-;" . consult-ripgrep))
+      :config (ctrlf-mode 1))
 
     (use-package embark
       :bind ("M-." . embark-act))
+
+    (add-hook 'rg-mode-hook
+	      '(lambda ()
+		 (switch-to-buffer-other-window "*rg*")))
   #+end_src
 
 * Fonts
@@ -38,10 +39,10 @@
 * General
   #+begin_src elisp
     (setq inhibit-startup-screen t)
-    (setq tool-bar-mode 0)
     (setq visible-bell t)
     (column-number-mode)
     (global-display-line-numbers-mode t)
+    (tool-bar-mode 0)
     (fset 'yes-or-no-p 'y-or-n-p)
 
     (use-package winum
@@ -53,6 +54,9 @@
 	     ("M-4" . winum-select-window-4)
 	     ("M-5" . winum-select-window-5)
 	     ("M-6" . winum-select-window-6)))
+
+    (use-package rainbow-delimiters
+      :hook (org-mode . rainbow-delimiters-mode))
   #+end_src
 
 * Git
@@ -78,9 +82,6 @@
       :config
       (which-key-mode)
       (setq which-key-idle-delay 0.1))
-
-    (use-package mini-frame
-      :config (mini-frame-mode))
   #+end_src
   
 * Org Mode
