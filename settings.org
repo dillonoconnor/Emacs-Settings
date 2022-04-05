@@ -1,3 +1,18 @@
+* Buffers
+  #+begin_src elisp
+    (use-package diminish)
+
+    (use-package which-key
+      :diminish which-key-mode
+      :config
+      (which-key-mode)
+      (setq which-key-idle-delay 0.1))
+
+    (use-package perspective
+      :init (persp-mode)
+      :bind ("C-x C-b" . persp-list-buffers))
+  #+end_src
+  
 * Completion and Search
   #+begin_src elisp
     (use-package company
@@ -5,10 +20,10 @@
       :init (global-company-mode))
 
     (use-package selectrum
-      :config (selectrum-mode 1))
+      :config (selectrum-mode t))
 
     (use-package selectrum-prescient
-      :config (selectrum-prescient-mode 1))
+      :config (selectrum-prescient-mode t))
 
     (use-package projectile
       :diminish projectile-mode
@@ -21,7 +36,7 @@
       :bind ("M-a" . marginalia-cycle))
 
     (use-package ctrlf
-      :config (ctrlf-mode 1))
+      :config (ctrlf-mode t))
 
     (use-package embark
       :bind ("M-." . embark-act))
@@ -44,19 +59,6 @@
     (global-display-line-numbers-mode t)
     (tool-bar-mode 0)
     (fset 'yes-or-no-p 'y-or-n-p)
-
-    (use-package winum
-      :config
-      (winum-mode)
-      :bind (("M-1" . winum-select-window-1)
-	     ("M-2" . winum-select-window-2)
-	     ("M-3" . winum-select-window-3)
-	     ("M-4" . winum-select-window-4)
-	     ("M-5" . winum-select-window-5)
-	     ("M-6" . winum-select-window-6)))
-
-    (use-package rainbow-delimiters
-      :hook (org-mode . rainbow-delimiters-mode))
   #+end_src
 
 * Git
@@ -69,29 +71,54 @@
 * God Mode
   #+begin_src elisp
     (use-package god-mode
-      :config (god-mode)
+      :init (god-mode)
       :bind ("<escape>" . god-local-mode))
   #+end_src
   
-* Minibuffer
+* Miscellaneous
   #+begin_src elisp
-    (use-package diminish)
+    (use-package dashboard
+      :config (dashboard-setup-startup-hook))
 
-    (use-package which-key
-      :diminish which-key-mode
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-projects-backend 'projectile)
+
+    (setq dashboard-items '((recents  . 5)
+			    (projects . 5)))
+
+    (use-package dimmer
       :config
-      (which-key-mode)
-      (setq which-key-idle-delay 0.1))
+      (dimmer-mode t)
+      (dimmer-configure-magit)
+      (dimmer-configure-which-key))
+
+    (use-package rainbow-delimiters
+      :hook (org-mode . rainbow-delimiters-mode))
+
+    (use-package undo-tree
+      :init (global-undo-tree-mode))
+
+    (use-package winum
+      :config (winum-mode)
+      :bind (("M-1" . winum-select-window-1)
+	     ("M-2" . winum-select-window-2)
+	     ("M-3" . winum-select-window-3)
+	     ("M-4" . winum-select-window-4)
+	     ("M-5" . winum-select-window-5)
+	     ("M-6" . winum-select-window-6)))
   #+end_src
-  
 * Org Mode
   #+begin_src elisp
     (use-package org-bullets
       :hook (org-mode . org-bullets-mode))
   #+end_src
   
-* Themes
+* Theme
   #+begin_src elisp
+    (use-package all-the-icons
+      :if (display-graphic-p))
+
     (use-package doom-themes
       :config (load-theme 'doom-gruvbox t))
   #+end_src
+  
