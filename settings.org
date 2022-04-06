@@ -22,6 +22,11 @@
     (use-package selectrum
       :config (selectrum-mode t))
 
+    (use-package prescient)
+
+    (use-package company-prescient
+      :config (company-prescient-mode t))
+
     (use-package selectrum-prescient
       :config (selectrum-prescient-mode t))
 
@@ -91,16 +96,24 @@
 
     (setq dashboard-set-file-icons t)
 
+    (defun dimmer-configure-embark ()
+      (add-to-list
+       'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
+
     (use-package dimmer
       :config
       (dimmer-mode t)
       (dimmer-configure-magit)
-      (dimmer-configure-which-key))
+      (dimmer-configure-which-key)
+      (dimmer-configure-embark))
+
+    (setq dimmer-fraction 0.4)
 
     (use-package rainbow-delimiters
       :hook (org-mode . rainbow-delimiters-mode))
 
     (use-package undo-tree
+      :diminish undo-tree-mode
       :init (global-undo-tree-mode))
 
     (use-package winum
@@ -126,4 +139,3 @@
     (use-package doom-themes
       :config (load-theme 'doom-gruvbox t))
   #+end_src
-  
