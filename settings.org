@@ -74,6 +74,7 @@
     (global-set-key (kbd "M-l") 'move-to-window-line-top-bottom)
     (global-set-key (kbd "C-c d") 'dired)
   #+end_src
+  
 * Fonts
   #+begin_src elisp
     (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
@@ -110,19 +111,6 @@
       (add-to-list
        'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
 
-    (use-package dimmer
-      :config
-      (dimmer-mode t)
-      (dimmer-configure-magit)
-      (dimmer-configure-which-key)
-      (dimmer-configure-embark))
-
-    (setq dimmer-fraction 0.4)
-
-    (use-package expand-region
-      :bind (("M-[" . er/expand-region)
-	     ("M-]" . er/contract-region)))
-
     (use-package format-all)
 
     (use-package iedit)
@@ -133,6 +121,12 @@
     (use-package smartparens
       :diminish smartparens-mode
       :hook (ruby-mode . smartparens-mode))
+  #+end_src
+
+* Movement
+  #+begin_src elisp
+    (use-package avy
+      :bind ("C-:" . avy-goto-char-2))
 
     (use-package winum
       :config
@@ -171,10 +165,26 @@
       '(push 'company-robe company-backends))
   #+end_src
 
+* Selection
+  #+begin_src elisp
+    (use-package expand-region
+      :bind (("M-[" . er/expand-region)
+	     ("M-]" . er/contract-region)))
+  #+end_src
+
 * Theme
   #+begin_src elisp
     (use-package all-the-icons
       :if (display-graphic-p))
+
+    (use-package dimmer
+      :config
+      (dimmer-mode t)
+      (dimmer-configure-magit)
+      (dimmer-configure-which-key)
+      (dimmer-configure-embark))
+
+    (setq dimmer-fraction 0.4)
 
     (use-package doom-themes
       :config (load-theme 'doom-gruvbox t))
