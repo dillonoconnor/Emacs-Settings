@@ -18,40 +18,40 @@
 
 * Completion and Search
   #+begin_src elisp
-    (use-package company
-      :diminish company-mode
-      :init (global-company-mode))
+		(use-package company
+			:diminish company-mode
+			:init (global-company-mode))
 
-    (use-package selectrum
-      :config (selectrum-mode t))
+		(use-package selectrum
+			:config (selectrum-mode t))
 
-    (use-package prescient)
+		(use-package prescient)
 
-    (use-package company-prescient
-      :config (company-prescient-mode t))
+		(use-package company-prescient
+			:config (company-prescient-mode t))
 
-    (use-package selectrum-prescient
-      :config (selectrum-prescient-mode t))
+		(use-package selectrum-prescient
+			:config (selectrum-prescient-mode t))
 
-    (use-package projectile
-      :diminish projectile-mode
-      :config (projectile-mode)
-      :bind (("M-p" . projectile-find-file)
-	     ("M-;" . projectile-ripgrep)))
+		(use-package projectile
+			:diminish projectile-mode
+			:config (projectile-mode)
+			:bind (("M-p" . projectile-find-file)
+						 ("M-;" . projectile-ripgrep)))
 
-    (use-package marginalia
-      :init (marginalia-mode)
-      :bind ("M-a" . marginalia-cycle))
+		(use-package marginalia
+			:init (marginalia-mode)
+			:bind ("M-a" . marginalia-cycle))
 
-    (use-package ctrlf
-      :config (ctrlf-mode t))
+		(use-package ctrlf
+			:config (ctrlf-mode t))
 
-    (use-package embark
-      :bind ("M-." . embark-act))
+		(use-package embark
+			:bind ("M-." . embark-act))
 
-    (add-hook 'rg-mode-hook
-	      '(lambda ()
-		 (switch-to-buffer-other-window "*rg*")))
+		(add-hook 'rg-mode-hook
+							'(lambda ()
+								 (switch-to-buffer-other-window "*rg*")))
   #+end_src
 
 * Fonts
@@ -80,8 +80,8 @@
 * God Mode
   #+begin_src elisp
 		(use-package god-mode
-			 :init (god-mode)
-			 :bind ("<escape>" . god-local-mode))
+			:init (god-mode)
+			:bind ("<escape>" . god-local-mode))
   #+end_src
 
 * Miscellaneous
