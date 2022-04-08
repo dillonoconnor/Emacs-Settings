@@ -8,7 +8,7 @@
 			 (unless (eq ibuffer-sorting-mode 'alphabetic)
 			   (ibuffer-do-sort-by-alphabetic)))))
 
-    (global-set-key (kbd "C-x b") 'ibuffer)
+    (global-set-key (kbd "C-c b") 'ibuffer)
   #+end_src
 
 * Completion, Search, and Help
@@ -69,6 +69,11 @@
     (setq dashboard-startup-banner 'logo)
   #+end_src
 
+* Emacs Binds
+  #+begin_src elisp
+    (global-set-key (kbd "M-l") 'move-to-window-line-top-bottom)
+    (global-set-key (kbd "C-c d") 'dired)
+  #+end_src
 * Fonts
   #+begin_src elisp
     (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
@@ -114,6 +119,14 @@
 
     (setq dimmer-fraction 0.4)
 
+    (use-package expand-region
+      :bind (("M-[" . er/expand-region)
+	     ("M-]" . er/contract-region)))
+
+    (use-package format-all)
+
+    (use-package iedit)
+
     (use-package rainbow-delimiters
       :hook (org-mode . rainbow-delimiters-mode))
 
@@ -122,15 +135,15 @@
       :hook (ruby-mode . smartparens-mode))
 
     (use-package winum
-      :config (winum-mode)
+      :config
+      (setq winum-auto=setup-mode-line nil)
+      (winum-mode)
       :bind (("M-1" . winum-select-window-1)
 	     ("M-2" . winum-select-window-2)
 	     ("M-3" . winum-select-window-3)
 	     ("M-4" . winum-select-window-4)
 	     ("M-5" . winum-select-window-5)
 	     ("M-6" . winum-select-window-6)))
-
-    (global-set-key (kbd "M-l") 'move-to-window-line-top-bottom)
   #+end_src
 
 * Org
@@ -153,6 +166,9 @@
     (use-package robe
       :diminish robe-mode
       :hook (ruby-mode . robe-mode))
+
+    (eval-after-load 'company
+      '(push 'company-robe company-backends))
   #+end_src
 
 * Theme
@@ -162,4 +178,7 @@
 
     (use-package doom-themes
       :config (load-theme 'doom-gruvbox t))
+
+    (use-package nyan-mode
+      :config (nyan-mode))
   #+end_src
