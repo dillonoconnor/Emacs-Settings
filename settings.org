@@ -1,73 +1,88 @@
 * Buffers
   #+begin_src elisp
-		(use-package diminish)
-		(use-package which-key
-			:diminish which-key-mode
-			:config
-			(which-key-mode)
-			(setq which-key-idle-delay 0.1))
+    (use-package diminish)
 
-		(global-set-key (kbd "C-x b") 'ibuffer)
+    (use-package ibuffer-projectile
+      :hook (ibuffer . (lambda ()
+			 (ibuffer-projectile-set-filter-groups)
+			 (unless (eq ibuffer-sorting-mode 'alphabetic)
+			   (ibuffer-do-sort-by-alphabetic)))))
 
-		(use-package ibuffer-projectile
-			:hook (ibuffer . (lambda ()
-												 (ibuffer-projectile-set-filter-groups)
-												 (unless (eq ibuffer-sorting-mode 'alphabetic)
-													 (ibuffer-do-sort-by-alphabetic)))))
+    (global-set-key (kbd "C-x b") 'ibuffer)
   #+end_src
 
-* Completion and Search
+* Completion, Search, and Help
   #+begin_src elisp
-		(use-package company
-			:diminish company-mode
-			:init (global-company-mode))
+    (use-package ctrlf
+      :config (ctrlf-mode t))
 
-		(use-package selectrum
-			:config (selectrum-mode t))
+    (use-package company
+      :diminish company-mode
+      :init (global-company-mode))
 
-		(use-package prescient)
+    (use-package company-prescient
+      :config (company-prescient-mode t))
 
-		(use-package company-prescient
-			:config (company-prescient-mode t))
+    (use-package embark
+      :bind ("M-." . embark-act))
 
-		(use-package selectrum-prescient
-			:config (selectrum-prescient-mode t))
+    (use-package marginalia
+      :init (marginalia-mode)
+      :bind ("M-a" . marginalia-cycle))
 
-		(use-package projectile
-			:diminish projectile-mode
-			:config (projectile-mode)
-			:bind (("M-p" . projectile-find-file)
-						 ("M-;" . projectile-ripgrep)))
+    (use-package prescient)
 
-		(use-package marginalia
-			:init (marginalia-mode)
-			:bind ("M-a" . marginalia-cycle))
+    (use-package projectile
+      :diminish projectile-mode
+      :config (projectile-mode)
+      :bind (("M-p" . projectile-find-file)
+	     ("M-r" . projectile-ripgrep)))
 
-		(use-package ctrlf
-			:config (ctrlf-mode t))
+    (use-package selectrum
+      :config (selectrum-mode t))
 
-		(use-package embark
-			:bind ("M-." . embark-act))
+    (use-package selectrum-prescient
+      :config (selectrum-prescient-mode t))
 
-		(add-hook 'rg-mode-hook
-							'(lambda ()
-								 (switch-to-buffer-other-window "*rg*")))
+    (use-package which-key
+      :diminish which-key-mode
+      :config
+      (which-key-mode)
+      (setq which-key-idle-delay 0.1))
+
+    (add-hook 'rg-mode-hook
+	      '(lambda ()
+		 (switch-to-buffer-other-window "*rg*")))
+  #+end_src
+
+* Dashboard
+  #+begin_src elisp
+    (use-package dashboard
+      :config (dashboard-setup-startup-hook))
+
+    (setq dashboard-items '((recents  . 5)
+			    (projects . 5)))
+
+    (setq dashboard-projects-backend 'projectile)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-startup-banner 'logo)
   #+end_src
 
 * Fonts
   #+begin_src elisp
-		(set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
+    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
   #+end_src
 
 * General
   #+begin_src elisp
-    (setq inhibit-startup-screen t)
-    (setq visible-bell t)
-    (setq-default tab-width 2)
     (column-number-mode)
+    (fset 'yes-or-no-p 'y-or-n-p)
     (global-display-line-numbers-mode t)
     (tool-bar-mode 0)
-    (fset 'yes-or-no-p 'y-or-n-p)
+
+    (setq inhibit-startup-screen t)
+    (setq visible-bell t)
   #+end_src
 
 * Git
@@ -79,57 +94,46 @@
 
 * God Mode
   #+begin_src elisp
-		(use-package god-mode
-			:init (god-mode)
-			:bind ("<escape>" . god-local-mode))
+    (use-package god-mode
+      :init (god-mode)
+      :bind ("<escape>" . god-local-mode))
   #+end_src
 
 * Miscellaneous
   #+begin_src elisp
-		(use-package dashboard
-			:config (dashboard-setup-startup-hook))
+    (defun dimmer-configure-embark ()
+      (add-to-list
+       'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
 
-		(setq dashboard-startup-banner 'logo)
+    (use-package dimmer
+      :config
+      (dimmer-mode t)
+      (dimmer-configure-magit)
+      (dimmer-configure-which-key)
+      (dimmer-configure-embark))
 
-		(setq dashboard-projects-backend 'projectile)
+    (setq dimmer-fraction 0.4)
 
-		(setq dashboard-items '((recents  . 5)
-														(projects . 5)))
+    (use-package rainbow-delimiters
+      :hook (org-mode . rainbow-delimiters-mode))
 
-		(setq dashboard-set-heading-icons t)
+    (use-package smartparens
+      :diminish smartparens-mode
+      :hook (ruby-mode . smartparens-mode))
 
-		(setq dashboard-set-file-icons t)
+    (use-package winum
+      :config (winum-mode)
+      :bind (("M-1" . winum-select-window-1)
+	     ("M-2" . winum-select-window-2)
+	     ("M-3" . winum-select-window-3)
+	     ("M-4" . winum-select-window-4)
+	     ("M-5" . winum-select-window-5)
+	     ("M-6" . winum-select-window-6)))
 
-		(defun dimmer-configure-embark ()
-			(add-to-list
-			 'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
-
-		(use-package dimmer
-			:config
-			(dimmer-mode t)
-			(dimmer-configure-magit)
-			(dimmer-configure-which-key)
-			(dimmer-configure-embark))
-
-		(setq dimmer-fraction 0.4)
-
-		(use-package rainbow-delimiters
-			:hook (org-mode . rainbow-delimiters-mode))
-
-		(use-package rbenv
-			:config (global-rbenv-mode))
-
-		(use-package winum
-			:config (winum-mode)
-			:bind (("M-1" . winum-select-window-1)
-						 ("M-2" . winum-select-window-2)
-						 ("M-3" . winum-select-window-3)
-						 ("M-4" . winum-select-window-4)
-						 ("M-5" . winum-select-window-5)
-						 ("M-6" . winum-select-window-6)))
+    (global-set-key (kbd "M-l") 'move-to-window-line-top-bottom)
   #+end_src
 
-* Org Mode
+* Org
   #+begin_src elisp
     (use-package org-bullets
       :hook (org-mode . org-bullets-mode))
@@ -137,9 +141,18 @@
 
 * Ruby
   #+begin_src elisp
-		(use-package robe
-			:diminish robe-mode
-			:hook (ruby-mode . robe-mode))
+    (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop")
+
+    (use-package flycheck
+      :diminish flycheck-mode
+      :hook (ruby-mode . flycheck-mode))
+
+    (use-package rbenv
+      :config (global-rbenv-mode))
+
+    (use-package robe
+      :diminish robe-mode
+      :hook (ruby-mode . robe-mode))
   #+end_src
 
 * Theme
