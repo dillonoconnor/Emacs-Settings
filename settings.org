@@ -1,18 +1,21 @@
 * Buffers
   #+begin_src elisp
-    (use-package diminish)
+		(use-package diminish)
+		(use-package which-key
+			:diminish which-key-mode
+			:config
+			(which-key-mode)
+			(setq which-key-idle-delay 0.1))
 
-    (use-package which-key
-      :diminish which-key-mode
-      :config
-      (which-key-mode)
-      (setq which-key-idle-delay 0.1))
+		(global-set-key (kbd "C-x b") 'ibuffer)
 
-    (use-package perspective
-      :init (persp-mode)
-      :bind ("C-x C-b" . persp-list-buffers))
+		(use-package ibuffer-projectile
+			:hook (ibuffer . (lambda ()
+												 (ibuffer-projectile-set-filter-groups)
+												 (unless (eq ibuffer-sorting-mode 'alphabetic)
+													 (ibuffer-do-sort-by-alphabetic)))))
   #+end_src
-  
+
 * Completion and Search
   #+begin_src elisp
     (use-package company
@@ -53,13 +56,14 @@
 
 * Fonts
   #+begin_src elisp
-    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
+		(set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
   #+end_src
 
 * General
   #+begin_src elisp
     (setq inhibit-startup-screen t)
     (setq visible-bell t)
+    (setq-default tab-width 2)
     (column-number-mode)
     (global-display-line-numbers-mode t)
     (tool-bar-mode 0)
@@ -72,65 +76,72 @@
       :commands magit-status
       :bind ("M-g" . magit-status))
   #+end_src
-  
+
 * God Mode
   #+begin_src elisp
-    (use-package god-mode
-      :init (god-mode)
-      :bind ("<escape>" . god-local-mode))
+		(use-package god-mode
+			 :init (god-mode)
+			 :bind ("<escape>" . god-local-mode))
   #+end_src
-  
+
 * Miscellaneous
   #+begin_src elisp
-    (use-package dashboard
-      :config (dashboard-setup-startup-hook))
+		(use-package dashboard
+			:config (dashboard-setup-startup-hook))
 
-    (setq dashboard-startup-banner 'logo)
+		(setq dashboard-startup-banner 'logo)
 
-    (setq dashboard-projects-backend 'projectile)
+		(setq dashboard-projects-backend 'projectile)
 
-    (setq dashboard-items '((recents  . 5)
-			    (projects . 5)))
+		(setq dashboard-items '((recents  . 5)
+														(projects . 5)))
 
-    (setq dashboard-set-heading-icons t)
+		(setq dashboard-set-heading-icons t)
 
-    (setq dashboard-set-file-icons t)
+		(setq dashboard-set-file-icons t)
 
-    (defun dimmer-configure-embark ()
-      (add-to-list
-       'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
+		(defun dimmer-configure-embark ()
+			(add-to-list
+			 'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
 
-    (use-package dimmer
-      :config
-      (dimmer-mode t)
-      (dimmer-configure-magit)
-      (dimmer-configure-which-key)
-      (dimmer-configure-embark))
+		(use-package dimmer
+			:config
+			(dimmer-mode t)
+			(dimmer-configure-magit)
+			(dimmer-configure-which-key)
+			(dimmer-configure-embark))
 
-    (setq dimmer-fraction 0.4)
+		(setq dimmer-fraction 0.4)
 
-    (use-package rainbow-delimiters
-      :hook (org-mode . rainbow-delimiters-mode))
+		(use-package rainbow-delimiters
+			:hook (org-mode . rainbow-delimiters-mode))
 
-    (use-package undo-tree
-      :diminish undo-tree-mode
-      :init (global-undo-tree-mode))
+		(use-package rbenv
+			:config (global-rbenv-mode))
 
-    (use-package winum
-      :config (winum-mode)
-      :bind (("M-1" . winum-select-window-1)
-	     ("M-2" . winum-select-window-2)
-	     ("M-3" . winum-select-window-3)
-	     ("M-4" . winum-select-window-4)
-	     ("M-5" . winum-select-window-5)
-	     ("M-6" . winum-select-window-6)))
+		(use-package winum
+			:config (winum-mode)
+			:bind (("M-1" . winum-select-window-1)
+						 ("M-2" . winum-select-window-2)
+						 ("M-3" . winum-select-window-3)
+						 ("M-4" . winum-select-window-4)
+						 ("M-5" . winum-select-window-5)
+						 ("M-6" . winum-select-window-6)))
   #+end_src
+
 * Org Mode
   #+begin_src elisp
     (use-package org-bullets
       :hook (org-mode . org-bullets-mode))
   #+end_src
-  
+
+* Ruby
+  #+begin_src elisp
+		(use-package robe
+			:diminish robe-mode
+			:hook (ruby-mode . robe-mode))
+  #+end_src
+
 * Theme
   #+begin_src elisp
     (use-package all-the-icons
