@@ -1,16 +1,3 @@
-* Buffers
-  #+begin_src elisp
-    (use-package diminish)
-
-    (use-package ibuffer-projectile
-      :hook (ibuffer . (lambda ()
-			 (ibuffer-projectile-set-filter-groups)
-			 (unless (eq ibuffer-sorting-mode 'alphabetic)
-			   (ibuffer-do-sort-by-alphabetic)))))
-
-    (global-set-key (kbd "C-c b") 'ibuffer)
-  #+end_src
-
 * Completion, Search, and Help
   #+begin_src elisp
     (use-package ctrlf
@@ -23,20 +10,16 @@
     (use-package company-prescient
       :config (company-prescient-mode t))
 
+    (use-package deadgrep)
+
     (use-package embark
-      :bind ("M-." . embark-act))
+      :general ("M-." 'embark-act))
 
     (use-package marginalia
       :init (marginalia-mode)
-      :bind ("M-a" . marginalia-cycle))
+      :general ("M-a" 'marginalia-cycle))
 
     (use-package prescient)
-
-    (use-package projectile
-      :diminish projectile-mode
-      :config (projectile-mode)
-      :bind (("M-p" . projectile-find-file)
-	     ("M-r" . projectile-ripgrep)))
 
     (use-package selectrum
       :config (selectrum-mode t))
@@ -49,38 +32,9 @@
       :config
       (which-key-mode)
       (setq which-key-idle-delay 0.1))
-
-    (add-hook 'rg-mode-hook
-	      '(lambda ()
-		 (switch-to-buffer-other-window "*rg*")))
   #+end_src
 
-* Dashboard
-  #+begin_src elisp
-    (use-package dashboard
-      :config (dashboard-setup-startup-hook))
-
-    (setq dashboard-items '((recents  . 5)
-			    (projects . 5)))
-
-    (setq dashboard-projects-backend 'projectile)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner 'logo)
-  #+end_src
-
-* Emacs Binds
-  #+begin_src elisp
-    (global-set-key (kbd "M-l") 'move-to-window-line-top-bottom)
-    (global-set-key (kbd "C-c d") 'dired)
-  #+end_src
-  
-* Fonts
-  #+begin_src elisp
-    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
-  #+end_src
-
-* General
+* Emacs
   #+begin_src elisp
     (column-number-mode)
     (fset 'yes-or-no-p 'y-or-n-p)
@@ -91,18 +45,38 @@
     (setq visible-bell t)
   #+end_src
 
+* Fonts
+  #+begin_src elisp
+    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
+  #+end_src
+
+* General.el
+  #+begin_src elisp
+    (general-def
+      :prefix "M-c"
+      "C-b" 'ibuffer
+      "C-d" 'dired)
+
+    (general-def "M-l" 'move-to-window-line-top-bottom)
+
+    (general-def
+      :prefix "M-p"
+      "C-f" 'project-find-file
+      "C-r" 'deadgrep)
+  #+end_src
+
 * Git
   #+begin_src elisp
     (use-package magit
       :commands magit-status
-      :bind ("M-g" . magit-status))
+      :general ("M-g" 'magit-status))
   #+end_src
 
 * God Mode
   #+begin_src elisp
     (use-package god-mode
       :init (god-mode)
-      :bind ("<escape>" . god-local-mode))
+      :general ("<escape>" 'god-local-mode))
   #+end_src
 
 * Miscellaneous
@@ -110,6 +84,8 @@
     (defun dimmer-configure-embark ()
       (add-to-list
        'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
+
+    (use-package diminish)
 
     (use-package format-all)
 
@@ -126,18 +102,18 @@
 * Movement
   #+begin_src elisp
     (use-package avy
-      :bind ("C-:" . avy-goto-char-2))
+      :general ("M-'" 'avy-goto-char-2))
 
     (use-package winum
       :config
       (setq winum-auto=setup-mode-line nil)
       (winum-mode)
-      :bind (("M-1" . winum-select-window-1)
-	     ("M-2" . winum-select-window-2)
-	     ("M-3" . winum-select-window-3)
-	     ("M-4" . winum-select-window-4)
-	     ("M-5" . winum-select-window-5)
-	     ("M-6" . winum-select-window-6)))
+      :general ("M-1" 'winum-select-window-1
+		"M-2" 'winum-select-window-2
+		"M-3" 'winum-select-window-3
+		"M-4" 'winum-select-window-4
+		"M-5" 'winum-select-window-5
+		"M-6" 'winum-select-window-6))
   #+end_src
 
 * Org
@@ -148,11 +124,8 @@
 
 * Ruby
   #+begin_src elisp
-    (setq flycheck-ruby-rubocop-executable "~/.rbenv/shims/rubocop")
-
-    (use-package flycheck
-      :diminish flycheck-mode
-      :hook (ruby-mode . flycheck-mode))
+    (add-hook 'ruby-mode 'flymake-mode)
+    (add-hook 'mhtml-mode 'flymake-mode)
 
     (use-package rbenv
       :config (global-rbenv-mode))
@@ -168,8 +141,8 @@
 * Selection
   #+begin_src elisp
     (use-package expand-region
-      :bind (("M-[" . er/expand-region)
-	     ("M-]" . er/contract-region)))
+      :general ("M-[" 'er/expand-region
+		"M-]" 'er/contract-region))
   #+end_src
 
 * Theme
