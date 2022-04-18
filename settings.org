@@ -31,7 +31,24 @@
       :diminish which-key-mode
       :config
       (which-key-mode)
+      (which-key-enable-god-mode-support)
       (setq which-key-idle-delay 0.1))
+  #+end_src
+
+* Centaur Tabs
+  #+begin_src elisp
+    (use-package centaur-tabs
+      :demand
+      :config
+      (centaur-tabs-mode t)
+      :general
+      ("M-<prior>" 'centaur-tabs-backward
+       "M-<next>" 'centaur-tabs-forward
+       "C-<prior>" 'centaur-tabs-backward-group
+       "C-<next>" 'centaur-tabs-forward-group))
+
+    (setq centaur-tabs-set-icons t)
+    (setq centaur-tabs-enable-ido-completion nil)
   #+end_src
 
 * Emacs
@@ -53,20 +70,26 @@
 * General.el
   #+begin_src elisp
     (general-def
-      :prefix "M-c"
-      "C-b" 'ibuffer
-      "C-d" 'dired)
+      :prefix "C-x"
+      "C-1" 'delete-other-windows
+      "C-2" 'split-window-below
+      "C-3" 'split-window-right
+      "C-0" 'delete-window)
 
     (general-def "M-l" 'move-to-window-line-top-bottom)
 
     (general-def
       :prefix "M-p"
-      "C-f" 'project-find-file
-      "C-r" 'deadgrep)
+      "C-b" '(switch-to-buffer :wk "Switch Buffer")
+      "C-d" '(dired :wk "Switch Directory")
+      "C-f" '(project-find-file :wk "Find File")
+      "C-r" '(deadgrep :wk "Deadgrep"))
   #+end_src
 
 * Git
   #+begin_src elisp
+    (use-package git-timemachine)
+
     (use-package magit
       :commands magit-status
       :general ("M-g" 'magit-status))
@@ -74,6 +97,31 @@
 
 * God Mode
   #+begin_src elisp
+    (defun my-god-mode-update-cursor-type ()
+      (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+
+    (defun my-god-mode-update-mode-line ()
+      (cond
+       (god-local-mode
+	(set-face-attribute 'mode-line nil
+			    :foreground "#604000"
+			    :background "#fff29a")
+	(set-face-attribute 'mode-line-inactive nil
+			    :foreground "#3f3000"
+			    :background "#fff3da"))
+       (t
+	(set-face-attribute 'mode-line nil
+			    :foreground "#0a0a0a"
+			    :background "#d7d7d7")
+	(set-face-attribute 'mode-line-inactive nil
+			    :foreground "#404148"
+			    :background "#efefef"))))
+
+
+    (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
+
+    (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
+
     (use-package god-mode
       :init (god-mode)
       :general ("<escape>" 'god-local-mode))
@@ -89,14 +137,23 @@
 
     (use-package format-all)
 
+    (use-package hungry-delete
+      :diminish (hungry-delete-mode)
+      :config (global-hungry-delete-mode))
+
     (use-package iedit)
+
+    (use-package json-reformat)
+
+    (use-package move-text
+      :config (move-text-default-bindings))
 
     (use-package rainbow-delimiters
       :hook (org-mode . rainbow-delimiters-mode))
 
-    (use-package smartparens
-      :diminish smartparens-mode
-      :hook (ruby-mode . smartparens-mode))
+    (use-package super-save
+      :diminish (super-save-mode)
+      :config (super-save-mode t))
   #+end_src
 
 * Movement
@@ -124,8 +181,10 @@
 
 * Ruby
   #+begin_src elisp
-    (add-hook 'ruby-mode 'flymake-mode)
-    (add-hook 'mhtml-mode 'flymake-mode)
+    (add-hook 'ruby-mode-hook 'flymake-mode)
+    (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
+    (add-hook 'mhtml-mode-hook 'flymake-mode)
+    (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
 
     (use-package rbenv
       :config (global-rbenv-mode))
@@ -136,6 +195,14 @@
 
     (eval-after-load 'company
       '(push 'company-robe company-backends))
+
+    (use-package ruby-end
+      :diminish (ruby-end-mode))
+
+    (use-package ruby-interpolation
+      :diminish (ruby-interpolation-mode))
+
+    (use-package yari)
   #+end_src
 
 * Selection
