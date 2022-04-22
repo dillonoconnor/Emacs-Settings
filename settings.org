@@ -1,31 +1,23 @@
 * Completion, Search, and Help
   #+begin_src elisp
-    (use-package ctrlf
-      :config (ctrlf-mode t))
-
-    (use-package company
-      :diminish company-mode
-      :init (global-company-mode))
-
-    (use-package company-prescient
-      :config (company-prescient-mode t))
+    (use-package corfu
+      :custom (corfu-cycle t)
+      :hook (prog-mode . corfu-mode))
 
     (use-package deadgrep)
-
-    (use-package embark
-      :general ("M-." 'embark-act))
 
     (use-package marginalia
       :init (marginalia-mode)
       :general ("M-a" 'marginalia-cycle))
 
-    (use-package prescient)
+    (use-package orderless
+      :ensure t
+      :custom
+      (completion-styles '(orderless basic))
+      (completion-category-overrides '((file (styles basic partial-completion)))))
 
-    (use-package selectrum
-      :config (selectrum-mode t))
-
-    (use-package selectrum-prescient
-      :config (selectrum-prescient-mode t))
+    (use-package vertico
+      :init (vertico-mode))
 
     (use-package which-key
       :diminish which-key-mode
@@ -35,22 +27,6 @@
       (setq which-key-idle-delay 0.1))
   #+end_src
 
-* Centaur Tabs
-  #+begin_src elisp
-    (use-package centaur-tabs
-      :demand
-      :config
-      (centaur-tabs-mode t)
-      :general
-      ("M-<prior>" 'centaur-tabs-backward
-       "M-<next>" 'centaur-tabs-forward
-       "C-<prior>" 'centaur-tabs-backward-group
-       "C-<next>" 'centaur-tabs-forward-group))
-
-    (setq centaur-tabs-set-icons t)
-    (setq centaur-tabs-enable-ido-completion nil)
-  #+end_src
-
 * Emacs
   #+begin_src elisp
     (column-number-mode)
@@ -58,8 +34,10 @@
     (global-display-line-numbers-mode t)
     (tool-bar-mode 0)
 
+    (setq dired-use-ls-dired nil)
     (setq inhibit-startup-screen t)
     (setq visible-bell t)
+    (setq initial-scratch-message "")
   #+end_src
 
 * Fonts
@@ -179,22 +157,22 @@
       :hook (org-mode . org-bullets-mode))
   #+end_src
 
-* Ruby
+* Prog
   #+begin_src elisp
     (add-hook 'ruby-mode-hook 'flymake-mode)
     (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
     (add-hook 'mhtml-mode-hook 'flymake-mode)
     (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
 
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    (setq dumb-jump-prefer-searcher 'rg)
+
+    (use-package dumb-jump
+      :general ("M-." 'xref-find-definitions))
+
     (use-package rbenv
       :config (global-rbenv-mode))
-
-    (use-package robe
-      :diminish robe-mode
-      :hook (ruby-mode . robe-mode))
-
-    (eval-after-load 'company
-      '(push 'company-robe company-backends))
 
     (use-package ruby-end
       :diminish (ruby-end-mode))
