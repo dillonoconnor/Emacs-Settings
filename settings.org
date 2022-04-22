@@ -1,3 +1,4 @@
+#+STARTUP: overview
 * Completion, Search, and Help
   #+begin_src elisp
     (use-package corfu
@@ -195,8 +196,7 @@
       :config
       (dimmer-mode t)
       (dimmer-configure-magit)
-      (dimmer-configure-which-key)
-      (dimmer-configure-embark))
+      (dimmer-configure-which-key))
 
     (setq dimmer-fraction 0.4)
 
