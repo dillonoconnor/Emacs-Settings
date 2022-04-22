@@ -107,10 +107,6 @@
 
 * Miscellaneous
   #+begin_src elisp
-    (defun dimmer-configure-embark ()
-      (add-to-list
-       'dimmer-buffer-exclusion-regexps "^\\*Embark Actions\\*$"))
-
     (use-package diminish)
 
     (use-package format-all)
