@@ -30,7 +30,10 @@
 
 * Emacs
   #+begin_src elisp
+    (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+
     (column-number-mode)
+    (delete-selection-mode t)
     (fset 'yes-or-no-p 'y-or-n-p)
     (global-display-line-numbers-mode t)
     (tool-bar-mode 0)
@@ -39,6 +42,20 @@
     (setq inhibit-startup-screen t)
     (setq visible-bell t)
     (setq initial-scratch-message "")
+
+    (setq auto-window-vscroll nil)
+    (customize-set-variable 'fast-but-imprecise-scrolling t)
+    (customize-set-variable 'scroll-conservatively 101)
+    (customize-set-variable 'scroll-margin 0)
+    (customize-set-variable 'scroll-preserve-screen-position t)
+
+    (defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
+
+    (dolist (command '(scroll-up-command scroll-down-command
+					 recenter-top-bottom other-window))
+      (advice-add command :after #'pulse-line))
   #+end_src
 
 * Fonts
@@ -76,6 +93,10 @@
 
 * God Mode
   #+begin_src elisp
+    (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
+
+    (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
+
     (defun my-god-mode-update-cursor-type ()
       (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
 
@@ -83,23 +104,18 @@
       (cond
        (god-local-mode
 	(set-face-attribute 'mode-line nil
-			    :foreground "#604000"
-			    :background "#fff29a")
+			    :foreground "#d9d9d9"
+			    :background "#8e0b0b")
 	(set-face-attribute 'mode-line-inactive nil
-			    :foreground "#3f3000"
-			    :background "#fff3da"))
+			    :foreground "#8c8c8c"
+			    :background "#1a1a1a"))
        (t
 	(set-face-attribute 'mode-line nil
-			    :foreground "#0a0a0a"
-			    :background "#d7d7d7")
+			    :foreground "#d9d9d9"
+			    :background "#1a1a1a")
 	(set-face-attribute 'mode-line-inactive nil
-			    :foreground "#404148"
-			    :background "#efefef"))))
-
-
-    (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
-
-    (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
+			    :foreground "#8c8c8c"
+			    :background "#1a1a1a"))))
 
     (use-package god-mode
       :init (god-mode)
@@ -108,6 +124,21 @@
 
 * Miscellaneous
   #+begin_src elisp
+    (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
+    (require 'undo-hl)
+
+    (add-hook 'prog-mode-hook 'undo-hl-mode)
+    (add-hook 'text-mode-hook 'undo-hl-mode)
+    (diminish 'undo-hl-mode)
+
+    (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+	  backup-by-copying t
+	  version-control t
+	  delete-old-versions t
+	  kept-new-versions 20
+	  kept-old-versions 5
+	  )
+
     (use-package diminish)
 
     (use-package format-all)
@@ -123,12 +154,17 @@
     (use-package move-text
       :config (move-text-default-bindings))
 
+    (use-package paradox
+      :init (paradox-enable))
+
     (use-package rainbow-delimiters
       :hook (org-mode . rainbow-delimiters-mode))
 
     (use-package super-save
       :diminish (super-save-mode)
       :config (super-save-mode t))
+
+    (use-package vundo)
   #+end_src
 
 * Movement
@@ -177,7 +213,16 @@
     (use-package ruby-interpolation
       :diminish (ruby-interpolation-mode))
 
-    (use-package yari)
+    (use-package tree-sitter
+      :diminish
+      :hook
+      ((ruby-mode . tree-sitter-mode)
+       (ruby-mode . tree-sitter-hl-mode)))
+
+
+      (use-package tree-sitter-langs)
+
+      (use-package yari)
   #+end_src
 
 * Selection
@@ -191,6 +236,9 @@
   #+begin_src elisp
     (use-package all-the-icons
       :if (display-graphic-p))
+
+    (use-package all-the-icons-dired
+      :hook (dired-mode . all-the-icons-dired-mode))
 
     (use-package dimmer
       :config
