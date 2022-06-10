@@ -40,8 +40,10 @@
 
     (setq dired-use-ls-dired nil)
     (setq inhibit-startup-screen t)
-    (setq visible-bell t)
     (setq initial-scratch-message "")
+    (setq tab-always-indent 'complete)
+    (setq visible-bell t)
+
 
     (setq auto-window-vscroll nil)
     (customize-set-variable 'fast-but-imprecise-scrolling t)
@@ -57,7 +59,6 @@
 					 recenter-top-bottom other-window))
       (advice-add command :after #'pulse-line))
   #+end_src
-
 * Fonts
   #+begin_src elisp
     (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
@@ -79,6 +80,8 @@
       "C-b" '(switch-to-buffer :wk "Switch Buffer")
       "C-d" '(dired :wk "Switch Directory")
       "C-f" '(project-find-file :wk "Find File")
+      "C-l" '(goto-line :wk "Go to LINE")
+      "C-p" '(project-find-dir :wk "Find Directory")
       "C-r" '(deadgrep :wk "Deadgrep"))
   #+end_src
 
@@ -90,7 +93,6 @@
       :commands magit-status
       :general ("M-g" 'magit-status))
   #+end_src
-
 * God Mode
   #+begin_src elisp
     (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
@@ -139,6 +141,10 @@
 	  kept-old-versions 5
 	  )
 
+    (setq org-image-actual-width nil)
+
+    (use-package command-log-mode)
+
     (use-package diminish)
 
     (use-package format-all)
@@ -149,13 +155,19 @@
 
     (use-package iedit)
 
+    (use-package org-sidebar)
+
     (use-package json-reformat)
 
     (use-package move-text
       :config (move-text-default-bindings))
 
+    (use-package org-present)
+
     (use-package paradox
       :init (paradox-enable))
+
+    (use-package presentation)
 
     (use-package rainbow-delimiters
       :hook (org-mode . rainbow-delimiters-mode))
@@ -165,6 +177,8 @@
       :config (super-save-mode t))
 
     (use-package vundo)
+
+    (use-package windresize)
   #+end_src
 
 * Movement
@@ -238,6 +252,7 @@
       :if (display-graphic-p))
 
     (use-package all-the-icons-dired
+      :diminish
       :hook (dired-mode . all-the-icons-dired-mode))
 
     (use-package dimmer
