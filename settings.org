@@ -1,4 +1,10 @@
 #+STARTUP: overview
+* Code Formatting
+#+begin_src elisp
+  (use-package format-all)
+
+  (use-package json-reformat)
+#+end_src
 * Completion, Search, and Help
   #+begin_src elisp
     (use-package corfu
@@ -27,7 +33,6 @@
       (which-key-enable-god-mode-support)
       (setq which-key-idle-delay 0.1))
   #+end_src
-
 * Emacs
   #+begin_src elisp
     (add-hook 'dired-mode-hook 'dired-hide-details-mode)
@@ -50,14 +55,6 @@
     (customize-set-variable 'scroll-conservatively 101)
     (customize-set-variable 'scroll-margin 0)
     (customize-set-variable 'scroll-preserve-screen-position t)
-
-    (defun pulse-line (&rest _)
-      "Pulse the current line."
-      (pulse-momentary-highlight-one-line (point)))
-
-    (dolist (command '(scroll-up-command scroll-down-command
-					 recenter-top-bottom other-window))
-      (advice-add command :after #'pulse-line))
   #+end_src
 * Fonts
   #+begin_src elisp
@@ -127,10 +124,18 @@
 * Miscellaneous
   #+begin_src elisp
     (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
-    (require 'undo-hl)
 
     (add-hook 'prog-mode-hook 'undo-hl-mode)
     (add-hook 'text-mode-hook 'undo-hl-mode)
+
+    (defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
+
+    (dolist (command '(scroll-up-command scroll-down-command
+					 recenter-top-bottom other-window))
+      (advice-add command :after #'pulse-line))
+
     (diminish 'undo-hl-mode)
 
     (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -141,13 +146,7 @@
 	  kept-old-versions 5
 	  )
 
-    (setq org-image-actual-width nil)
-
-    (use-package command-log-mode)
-
     (use-package diminish)
-
-    (use-package format-all)
 
     (use-package hungry-delete
       :diminish (hungry-delete-mode)
@@ -155,36 +154,32 @@
 
     (use-package iedit)
 
-    (use-package org-sidebar)
-
-    (use-package json-reformat)
-
-    (use-package move-text
-      :config (move-text-default-bindings))
-
-    (use-package org-present)
-
     (use-package paradox
       :init (paradox-enable))
-
-    (use-package presentation)
-
-    (use-package rainbow-delimiters
-      :hook (org-mode . rainbow-delimiters-mode))
 
     (use-package super-save
       :diminish (super-save-mode)
       :config (super-save-mode t))
 
     (use-package vundo)
-
-    (use-package windresize)
   #+end_src
 
-* Movement
+* Movement / Navigation
   #+begin_src elisp
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    (setq dumb-jump-prefer-searcher 'rg)
+
     (use-package avy
       :general ("M-'" 'avy-goto-char-2))
+
+    (use-package dumb-jump
+      :general ("M-." 'xref-find-definitions))
+
+    (use-package move-text
+      :config (move-text-default-bindings))
+
+    (use-package windresize)
 
     (use-package winum
       :config
@@ -200,23 +195,31 @@
 
 * Org
   #+begin_src elisp
+    (setq org-image-actual-width nil)
+
     (use-package org-bullets
       :hook (org-mode . org-bullets-mode))
+
+    (use-package org-sidebar)
+
+    (use-package rainbow-delimiters
+      :hook (org-mode . rainbow-delimiters-mode))
   #+end_src
 
-* Prog
+* Presentation
+#+begin_src elisp
+  (use-package command-log-mode)
+
+  (use-package org-present)
+
+  (use-package presentation)
+#+end_src
+* Programming
   #+begin_src elisp
     (add-hook 'ruby-mode-hook 'flymake-mode)
     (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
     (add-hook 'mhtml-mode-hook 'flymake-mode)
     (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
-
-    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-    (setq dumb-jump-prefer-searcher 'rg)
-
-    (use-package dumb-jump
-      :general ("M-." 'xref-find-definitions))
 
     (use-package rbenv
       :config (global-rbenv-mode))
@@ -234,9 +237,9 @@
        (ruby-mode . tree-sitter-hl-mode)))
 
 
-      (use-package tree-sitter-langs)
+    (use-package tree-sitter-langs)
 
-      (use-package yari)
+    (use-package yari)
   #+end_src
 
 * Selection
