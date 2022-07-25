@@ -123,10 +123,10 @@
 
 * Miscellaneous
   #+begin_src elisp
-    (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
+    ;; (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
 
-    (add-hook 'prog-mode-hook 'undo-hl-mode)
-    (add-hook 'text-mode-hook 'undo-hl-mode)
+    ;; (add-hook 'prog-mode-hook 'undo-hl-mode)
+    ;; (add-hook 'text-mode-hook 'undo-hl-mode)
 
     (defun pulse-line (&rest _)
       "Pulse the current line."
@@ -172,6 +172,11 @@
 
     (use-package avy
       :general ("M-'" 'avy-goto-char-2))
+
+    (use-package dirvish
+      :ensure t
+      :init
+      (dirvish-override-dired-mode))
 
     (use-package dumb-jump
       :general ("M-." 'xref-find-definitions))
@@ -220,6 +225,9 @@
     (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
     (add-hook 'mhtml-mode-hook 'flymake-mode)
     (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
+
+    (use-package go-mode
+      :mode "\\.go||'")
 
     (use-package rbenv
       :config (global-rbenv-mode))
