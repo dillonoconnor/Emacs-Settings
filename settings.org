@@ -8,7 +8,9 @@
 * Completion, Search, and Help
   #+begin_src elisp
     (use-package corfu
-      :custom (corfu-cycle t)
+      :custom
+      (corfu-cycle t)
+      (corfu-auto t)
       :hook (prog-mode . corfu-mode))
 
     (use-package deadgrep)
@@ -225,6 +227,8 @@
     (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
     (add-hook 'mhtml-mode-hook 'flymake-mode)
     (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
+
+    (use-package eglot)
 
     (use-package go-mode
       :mode "\\.go||'")
