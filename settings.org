@@ -6,281 +6,296 @@
   (use-package json-reformat)
 #+end_src
 * Completion, Search, and Help
-  #+begin_src elisp
-    (use-package corfu
-      :custom
-      (corfu-cycle t)
-      (corfu-auto t)
-      :hook (prog-mode . corfu-mode))
+#+begin_src elisp
+  (use-package corfu
+    :custom
+    (corfu-cycle t)
+    (corfu-auto t)
+    :hook (prog-mode . corfu-mode))
 
-    (use-package deadgrep)
+  (use-package deadgrep)
 
-    (use-package marginalia
-      :init (marginalia-mode)
-      :general ("M-a" 'marginalia-cycle))
+  (use-package marginalia
+    :init (marginalia-mode)
+    :general ("M-a" 'marginalia-cycle))
 
-    (use-package orderless
-      :ensure t
-      :custom
-      (completion-styles '(orderless basic))
-      (completion-category-overrides '((file (styles basic partial-completion)))))
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
 
-    (use-package vertico
-      :init (vertico-mode))
+  (use-package vertico
+    :init (vertico-mode))
 
-    (use-package which-key
-      :diminish which-key-mode
-      :config
-      (which-key-mode)
-      (which-key-enable-god-mode-support)
-      (setq which-key-idle-delay 0.1))
-  #+end_src
+  (use-package which-key
+    :diminish which-key-mode
+    :config
+    (which-key-mode)
+    (which-key-enable-god-mode-support)
+    (setq which-key-idle-delay 0.1))
+#+end_src
 * Emacs
-  #+begin_src elisp
-    (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+#+begin_src elisp
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
-    (column-number-mode)
-    (delete-selection-mode t)
-    (fset 'yes-or-no-p 'y-or-n-p)
-    (global-display-line-numbers-mode t)
-    (tool-bar-mode 0)
+  (column-number-mode)
+  (delete-selection-mode t)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-display-line-numbers-mode t)
+  (tool-bar-mode 0)
 
-    (setq dired-use-ls-dired nil)
-    (setq inhibit-startup-screen t)
-    (setq initial-scratch-message "")
-    (setq tab-always-indent 'complete)
-    (setq visible-bell t)
+  (setq display-line-numbers-type 'relative)
+  (setq dired-use-ls-dired nil)
+  (setq inhibit-startup-screen t)
+  (setq initial-scratch-message "")
+  (setq tab-always-indent 'complete)
+  (setq visible-bell t)
 
 
-    (setq auto-window-vscroll nil)
-    (customize-set-variable 'fast-but-imprecise-scrolling t)
-    (customize-set-variable 'scroll-conservatively 101)
-    (customize-set-variable 'scroll-margin 0)
-    (customize-set-variable 'scroll-preserve-screen-position t)
-  #+end_src
+  (setq auto-window-vscroll nil)
+  (customize-set-variable 'fast-but-imprecise-scrolling t)
+  (customize-set-variable 'scroll-conservatively 101)
+  (customize-set-variable 'scroll-margin 0)
+  (customize-set-variable 'scroll-preserve-screen-position t)
+#+end_src
 * Fonts
-  #+begin_src elisp
-    (set-face-attribute 'default nil :font "Iosevka Fixed Extended" :height 230)
-  #+end_src
+#+begin_src elisp
+  (set-face-attribute 'default nil :family "Iosevka Term Extended" :height 230 :width 'normal :weight `medium)
+#+end_src
 
 * General.el
-  #+begin_src elisp
-    (general-def
-      :prefix "C-x"
-      "C-1" 'delete-other-windows
-      "C-2" 'split-window-below
-      "C-3" 'split-window-right
-      "C-0" 'delete-window)
+#+begin_src elisp
+  (general-def
+    :prefix "C-x"
+    "C-1" 'delete-other-windows
+    "C-2" 'split-window-below
+    "C-3" 'split-window-right
+    "C-0" 'delete-window)
 
-    (general-def "M-l" 'move-to-window-line-top-bottom)
+  (general-def "M-l" 'move-to-window-line-top-bottom)
 
-    (general-def
-      :prefix "M-p"
-      "C-b" '(switch-to-buffer :wk "Switch Buffer")
-      "C-d" '(dired :wk "Switch Directory")
-      "C-f" '(project-find-file :wk "Find File")
-      "C-l" '(goto-line :wk "Go to LINE")
-      "C-p" '(project-find-dir :wk "Find Directory")
-      "C-r" '(deadgrep :wk "Deadgrep"))
-  #+end_src
+  (general-def
+    :prefix "M-p"
+    "C-b" '(switch-to-buffer :wk "Switch Buffer")
+    "C-d" '(dired :wk "Switch Directory")
+    "C-f" '(project-find-file :wk "Find File")
+    "C-l" '(goto-line :wk "Go to LINE")
+    "C-p" '(project-find-dir :wk "Find Directory")
+    "C-r" '(deadgrep :wk "Deadgrep"))
+#+end_src
 
 * Git
-  #+begin_src elisp
-    (use-package git-timemachine)
+#+begin_src elisp
+  (use-package git-timemachine)
 
-    (use-package magit
-      :commands magit-status
-      :general ("M-g" 'magit-status))
-  #+end_src
+  (use-package magit
+    :commands magit-status
+    :general ("M-g" 'magit-status))
+#+end_src
 * God Mode
-  #+begin_src elisp
-    (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
+#+begin_src elisp
+  (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
 
-    (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
+  (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
 
-    (defun my-god-mode-update-cursor-type ()
-      (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+  (defun my-god-mode-update-cursor-type ()
+    (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
 
-    (defun my-god-mode-update-mode-line ()
-      (cond
-       (god-local-mode
-	(set-face-attribute 'mode-line nil
-			    :foreground "#d9d9d9"
-			    :background "#8e0b0b")
-	(set-face-attribute 'mode-line-inactive nil
-			    :foreground "#8c8c8c"
-			    :background "#1a1a1a"))
-       (t
-	(set-face-attribute 'mode-line nil
-			    :foreground "#d9d9d9"
-			    :background "#1a1a1a")
-	(set-face-attribute 'mode-line-inactive nil
-			    :foreground "#8c8c8c"
-			    :background "#1a1a1a"))))
+  (defun my-god-mode-update-mode-line ()
+    (cond
+     (god-local-mode
+      (set-face-attribute 'mode-line nil
+			  :foreground "#d9d9d9"
+			  :background "#cd2f30")
+      (set-face-attribute 'mode-line-inactive nil
+			  :foreground "#8c8c8c"
+			  :background "#1a1a1a"))
+     (t
+      (set-face-attribute 'mode-line nil
+			  :foreground "#d9d9d9"
+			  :background "#1a1a1a")
+      (set-face-attribute 'mode-line-inactive nil
+			  :foreground "#8c8c8c"
+			  :background "#1a1a1a"))))
 
-    (use-package god-mode
-      :init (god-mode)
-      :general ("<escape>" 'god-local-mode))
-  #+end_src
+  (use-package god-mode
+    :init (god-mode)
+    :general ("<escape>" 'god-local-mode))
+#+end_src
 
 * Miscellaneous
-  #+begin_src elisp
-    ;; (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
+#+begin_src elisp
+  ;; (add-to-list 'load-path "~/.emacs.d/elpa/undo-hl")
 
-    ;; (add-hook 'prog-mode-hook 'undo-hl-mode)
-    ;; (add-hook 'text-mode-hook 'undo-hl-mode)
+  ;; (add-hook 'prog-mode-hook 'undo-hl-mode)
+  ;; (add-hook 'text-mode-hook 'undo-hl-mode)
 
-    (defun pulse-line (&rest _)
-      "Pulse the current line."
-      (pulse-momentary-highlight-one-line (point)))
+  (defun pulse-line (&rest _)
+    "Pulse the current line."
+    (pulse-momentary-highlight-one-line (point)))
 
-    (dolist (command '(scroll-up-command scroll-down-command
-					 recenter-top-bottom other-window))
-      (advice-add command :after #'pulse-line))
+  (dolist (command '(scroll-up-command scroll-down-command
+				       recenter-top-bottom other-window))
+    (advice-add command :after #'pulse-line))
 
-    (diminish 'undo-hl-mode)
+  (diminish 'undo-hl-mode)
 
-    (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-	  backup-by-copying t
-	  version-control t
-	  delete-old-versions t
-	  kept-new-versions 20
-	  kept-old-versions 5
-	  )
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+	backup-by-copying t
+	version-control t
+	delete-old-versions t
+	kept-new-versions 20
+	kept-old-versions 5
+	)
 
-    (use-package diminish)
+  (use-package diminish)
 
-    (use-package hungry-delete
-      :diminish (hungry-delete-mode)
-      :config (global-hungry-delete-mode))
+  (use-package hungry-delete
+    :diminish (hungry-delete-mode)
+    :config (global-hungry-delete-mode))
 
-    (use-package iedit)
+  (use-package iedit)
 
-    (use-package paradox
-      :init (paradox-enable))
+  (use-package paradox
+    :init (paradox-enable))
 
-    (use-package super-save
-      :diminish (super-save-mode)
-      :config (super-save-mode t))
+  (use-package super-save
+    :diminish (super-save-mode)
+    :config (super-save-mode t))
 
-    (use-package vundo)
-  #+end_src
+  (use-package vundo)
+#+end_src
 
 * Movement / Navigation
-  #+begin_src elisp
-    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-    (setq dumb-jump-prefer-searcher 'rg)
+#+begin_src elisp
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (setq dumb-jump-prefer-searcher 'rg)
 
-    (use-package avy
-      :general ("M-'" 'avy-goto-char-2))
+  (setq next-line-add-newlines t)
 
-    (use-package dirvish
-      :ensure t
-      :init
-      (dirvish-override-dired-mode))
+  (use-package avy
+    :general ("M-'" 'avy-goto-char-2))
 
-    (use-package dumb-jump
-      :general ("M-." 'xref-find-definitions))
+  (use-package dirvish
+    :ensure t
+    :init
+    (dirvish-override-dired-mode))
 
-    (use-package move-text
-      :config (move-text-default-bindings))
+  (use-package dumb-jump
+    :general ("M-." 'xref-find-definitions))
 
-    (use-package windresize)
+  (use-package move-text
+    :config (move-text-default-bindings))
 
-    (use-package winum
-      :config
-      (setq winum-auto=setup-mode-line nil)
-      (winum-mode)
-      :general ("M-1" 'winum-select-window-1
-		"M-2" 'winum-select-window-2
-		"M-3" 'winum-select-window-3
-		"M-4" 'winum-select-window-4
-		"M-5" 'winum-select-window-5
-		"M-6" 'winum-select-window-6))
-  #+end_src
+  (use-package windresize)
+
+  (use-package winum
+    :config
+    (setq winum-auto=setup-mode-line nil)
+    (winum-mode)
+    :general ("M-1" 'winum-select-window-1
+	      "M-2" 'winum-select-window-2
+	      "M-3" 'winum-select-window-3
+	      "M-4" 'winum-select-window-4
+	      "M-5" 'winum-select-window-5
+	      "M-6" 'winum-select-window-6))
+#+end_src
 
 * Org
-  #+begin_src elisp
-    (setq org-image-actual-width nil)
+#+begin_src elisp
+  (setq org-image-actual-width nil)
 
-    (use-package org-bullets
-      :hook (org-mode . org-bullets-mode))
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode))
 
-    (use-package org-sidebar)
+  (use-package org-sidebar)
 
-    (use-package rainbow-delimiters
-      :hook (org-mode . rainbow-delimiters-mode))
-  #+end_src
+  (use-package rainbow-delimiters
+    :hook (org-mode . rainbow-delimiters-mode))
+#+end_src
 
 * Presentation
 #+begin_src elisp
   (use-package command-log-mode)
 
-  (use-package org-present)
+  (use-package ox-reveal)
 
   (use-package presentation)
 #+end_src
 * Programming
-  #+begin_src elisp
-    (add-hook 'ruby-mode-hook 'flymake-mode)
-    (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
-    (add-hook 'mhtml-mode-hook 'flymake-mode)
-    (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
+#+begin_src elisp
+  (add-hook 'ruby-mode-hook 'electric-pair-local-mode)
+  (add-hook 'mhtml-mode-hook 'electric-pair-local-mode)
 
-    (use-package eglot)
+  (setq css-indent-offset 2)
+  (setq js-indent-level 2)
 
-    (use-package go-mode
-      :mode "\\.go||'")
+  (use-package eglot)
 
-    (use-package rbenv
-      :config (global-rbenv-mode))
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
 
-    (use-package ruby-end
-      :diminish (ruby-end-mode))
+  (use-package go-mode
+    :mode "\\.go||'")
 
-    (use-package ruby-interpolation
-      :diminish (ruby-interpolation-mode))
+  (use-package rbenv
+    :config (global-rbenv-mode))
 
-    (use-package tree-sitter
-      :diminish
-      :hook
-      ((ruby-mode . tree-sitter-mode)
-       (ruby-mode . tree-sitter-hl-mode)))
+  (use-package ruby-end
+    :diminish (ruby-end-mode))
+
+  (use-package ruby-interpolation
+    :diminish (ruby-interpolation-mode))
+
+  (use-package tree-sitter
+    :diminish
+    :hook
+    ((ruby-mode . tree-sitter-mode)
+     (ruby-mode . tree-sitter-hl-mode)))
 
 
-    (use-package tree-sitter-langs)
+  (use-package tree-sitter-langs)
 
-    (use-package yari)
-  #+end_src
+  (use-package vterm
+    :ensure t)
+
+  (use-package yari)
+#+end_src
 
 * Selection
-  #+begin_src elisp
-    (use-package expand-region
-      :general ("M-[" 'er/expand-region
-		"M-]" 'er/contract-region))
-  #+end_src
+#+begin_src elisp
+  (use-package expand-region
+    :general ("M-[" 'er/expand-region
+	      "M-]" 'er/contract-region))
+#+end_src
 
 * Theme
-  #+begin_src elisp
-    (use-package all-the-icons
-      :if (display-graphic-p))
+#+begin_src elisp
+  (use-package all-the-icons
+    :if (display-graphic-p))
 
-    (use-package all-the-icons-dired
-      :diminish
-      :hook (dired-mode . all-the-icons-dired-mode))
+  (use-package all-the-icons-dired
+    :diminish
+    :hook (dired-mode . all-the-icons-dired-mode))
 
-    (use-package dimmer
-      :config
-      (dimmer-mode t)
-      (dimmer-configure-magit)
-      (dimmer-configure-which-key))
+  (use-package dimmer
+    :config
+    (dimmer-mode t)
+    (dimmer-configure-magit)
+    (dimmer-configure-which-key))
 
-    (setq dimmer-fraction 0.4)
+  (setq dimmer-fraction 0.4)
 
-    (use-package doom-themes
-      :config (load-theme 'doom-gruvbox t))
+  (use-package doom-themes)
 
-    (use-package nyan-mode
-      :config (nyan-mode))
-  #+end_src
+  (use-package srcery-theme)
+
+  (use-package gruvbox-theme
+    :config (load-theme 'gruvbox-dark-hard t))
+
+  (use-package nyan-mode
+    :config (nyan-mode))
+#+end_src
