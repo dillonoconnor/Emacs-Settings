@@ -56,6 +56,7 @@
 
   (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.exs\\'" . elixir-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.heex\\'" . heex-ts-mode))
 #+end_src
 ** Modes
 #+begin_src emacs-lisp
@@ -201,7 +202,7 @@
   (use-package git-timemachine
     :ensure t)
 #+end_src
-* TODO Programming
+* Programming
 #+begin_src emacs-lisp
   (use-package eat
     :ensure t)
