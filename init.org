@@ -53,6 +53,7 @@
   (setopt initial-scratch-message nil)
   (setopt visible-bell t)
   (setopt window-combination-resize t)
+  (setopt select-active-regions nil) ; Fix WSLG clipboard bug
 
   (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.exs\\'" . elixir-ts-mode))
