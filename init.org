@@ -59,7 +59,9 @@
   (setopt use-short-answers t)
   (setopt visible-bell t)
   (setopt window-combination-resize t)
+  (setopt auto-save-visited-mode t)
   (setopt select-active-regions nil) ; Fix WSLG clipboard bug
+  (setopt make-backup-files nil)
 
   (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.exs\\'" . elixir-ts-mode))
@@ -215,7 +217,7 @@
 #+begin_src emacs-lisp
   (use-package eat
     :ensure t)
-  
+
   (use-package yasnippet
     :ensure t
     :config
