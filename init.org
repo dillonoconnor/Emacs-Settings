@@ -215,6 +215,10 @@
 #+end_src
 * Programming
 #+begin_src emacs-lisp
+  (use-package ansi-color
+    :hook
+    (compilation-filter . ansi-color-compilation-filter))
+
   (use-package eat
     :ensure t)
 
