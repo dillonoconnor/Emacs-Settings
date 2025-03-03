@@ -1,6 +1,6 @@
 #+TITLE: Dillon's Emacs Config
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
-#+STARTUP: content indent
+#+STARTUP: content
 * Package Management
 ** Elpaca
 #+begin_src emacs-lisp
@@ -120,7 +120,9 @@
      '("w" . ace-window)
      '("v" . magit)
      '("r" . consult-ripgrep)
-     '("e" . eat))
+     '("e" . eat)
+     '("s" . project-compile)
+     '("d" . dirvish))
 
     (meow-normal-define-key
      '("0" . meow-expand-0)
@@ -254,8 +256,28 @@
     :init
     (marginalia-mode))
 #+end_src
-* Notes
+* Dired
 #+begin_src emacs-lisp
+  (use-package dirvish
+    :ensure t
+    :config
+    (dirvish-override-dired-mode))
+#+end_src
+* Org
+** Variables
+#+begin_src emacs-lisp
+  (setopt org-directory "~/org")
+  (setopt org-agenda-files (list org-directory))
+  (setopt org-insert-heading-respect-content t)
+  (setopt org-superstar-leading-bullet ?\s)
+#+end_src
+** Notes
+#+begin_src emacs-lisp
+  (use-package org-superstar
+    :ensure t
+    :hook
+    (org-mode . org-superstar-mode))
+
   (use-package denote
     :ensure t)
 #+end_src
